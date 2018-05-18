@@ -13,8 +13,7 @@ public class DuplicateTableDAOImpl {
             "    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
             "    `seed` VARCHAR(250) NOT NULL,\n" +
             "    `error` VARCHAR(2048) NOT NULL,\n" +
-            "    PRIMARY KEY (`id`),\n" +
-            "    UNIQUE INDEX `seed_UNIQUE` (`seed` ASC)\n" +
+            "    PRIMARY KEY (`id`) \n" +
             ")\n";
 
 	public static void createTable() {
