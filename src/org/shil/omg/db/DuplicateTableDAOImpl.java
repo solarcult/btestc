@@ -13,6 +13,7 @@ public class DuplicateTableDAOImpl {
             "    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
             "    `seed` VARCHAR(250) NOT NULL,\n" +
             "    `error` VARCHAR(2048) NOT NULL,\n" +
+            "    `time` DATETIME NOT NULL,\n" +
             "    PRIMARY KEY (`id`) \n" +
             ")\n";
 
@@ -26,8 +27,8 @@ public class DuplicateTableDAOImpl {
 	
 	public static void main(String[] args) {
 //		createTable();
-		errorRecord("eroro", new RuntimeException("abc"));
 		errorRecord("sssssssss", "i am here");
+		errorRecord("eroro", new RuntimeException("abc"));
 	}
 	
 	public static void errorRecord(String seed,Exception e) {
@@ -35,7 +36,7 @@ public class DuplicateTableDAOImpl {
 		try {
 			StringWriter sw = new StringWriter();   
             e.printStackTrace(new PrintWriter(sw, true));
-            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error) VALUES (? , ? )");
+            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error,time) VALUES (? , ? , now())");
             d.setString(1, seed);
             d.setString(2, sw.toString());
             d.executeUpdate();
@@ -54,7 +55,7 @@ public class DuplicateTableDAOImpl {
 	public static void errorRecord(String seed,String sth) {
 		PreparedStatement d = null;
 		try {
-            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error) VALUES (? , ? )");
+            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error,time) VALUES (? , ? , now())");
             d.setString(1, seed);
             d.setString(2, sth);
             d.executeUpdate();

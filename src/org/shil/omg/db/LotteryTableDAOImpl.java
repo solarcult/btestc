@@ -11,6 +11,7 @@ public class LotteryTableDAOImpl {
             "    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
             "    `seed` VARCHAR(250) NOT NULL,\n" +
             "    `balance` BIGINT(20) NOT NULL DEFAULT 0,\n" +
+            "    `time` DATETIME NOT NULL,\n" +
             "    PRIMARY KEY (`id`),\n" +
             "    UNIQUE INDEX `seed_UNIQUE` (`seed` ASC)\n" +
             ")\n";
@@ -31,12 +32,13 @@ public class LotteryTableDAOImpl {
 	public static void lotteryRecord(String seed,long balance) {
 		PreparedStatement d = null;
 		try {
-            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO lottery (seed,balance) VALUES (? , ? )");
+            d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO lottery (seed,balance,time) VALUES (? , ? , now())");
             d.setString(1, seed);
             d.setLong(2, balance);
             d.executeUpdate();
             d.close();
 		}catch(Exception e) {
+			e.printStackTrace();
 			DuplicateTableDAOImpl.errorRecord(seed, String.valueOf(balance));
 			DuplicateTableDAOImpl.errorRecord(seed, e);
 		}finally {
