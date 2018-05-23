@@ -12,8 +12,7 @@ public class LotteryTableDAOImpl {
             "    `seed` VARCHAR(250) NOT NULL,\n" +
             "    `balance` BIGINT(20) NOT NULL DEFAULT 0,\n" +
             "    `time` DATETIME NOT NULL,\n" +
-            "    PRIMARY KEY (`id`),\n" +
-            "    UNIQUE INDEX `seed_UNIQUE` (`seed` ASC)\n" +
+            "    PRIMARY KEY (`id`)\n" +
             ")\n";
 
 	
