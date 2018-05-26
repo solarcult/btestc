@@ -2,6 +2,8 @@ package org.shil.omg.db;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 import org.shil.omg.db.connect.SeedDBDataBaseManager;
 
@@ -74,17 +76,42 @@ public class ShardingTableDAOImpl {
 		}
 	}
 	
+	public static void updateSeedsTested2Done(int tableIndex,List<Long> ids) {
+		if(ids.isEmpty()) return;
+		
+		StringBuilder inids = new StringBuilder();
+		for(long id : ids) {
+			inids.append(id);
+			inids.append(",");
+		}
+		
+		String updateSql = "UPDATE seed_"+tableIndex+" SET status = 1 WHERE id in ( "+inids.substring(0,inids.length()-1)+" )";
+		
+		Statement s = null;
+		try {
+			s = SeedDBDataBaseManager.getConnection().createStatement();
+			s.executeUpdate(updateSql);
+			s.close();
+		}catch(Exception e) {
+			DuplicateTableDAOImpl.errorRecord("updateSeedsTested2Done "+tableIndex +" inids:" + inids.toString(), e);
+		}finally {
+			try {
+				if(s!=null) s.close();
+			} catch (Exception ex) {
+//				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		try {
 //			MysqlDataBaseManager.getConnection().createStatement().executeUpdate(createTableSql(8888));
 //			insertSeedTested("I am a fucking good seed");
 //			updateSeedTested(2787, 188);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 
 }
