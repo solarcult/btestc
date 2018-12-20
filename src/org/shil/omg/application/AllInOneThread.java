@@ -5,7 +5,8 @@ public class AllInOneThread extends Thread{
 	@Override
 	public void run() {
 		do {
-			AllInOne.guess();
+//			AllInOne.guess();
+			AllInOne.randomSeedsGuess();
 		}while(true);
 	}
 

@@ -1,5 +1,7 @@
 package org.shil.omg.application;
 
+import java.util.Random;
+
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.store.MySQLFullPrunedBlockStore;
 import org.bitcoinj.wallet.DeterministicSeed;
@@ -27,6 +29,17 @@ public class AllInOne {
 		try {
 			Wallet wallet = new Wallet(MainNetParams.get());
 			String seed = Joiner.on(" ").join(wallet.getKeyChainSeed().getMnemonicCode());
+			testSeed(seed);
+		}catch(Exception e) {
+			DuplicateTableDAOImpl.errorRecord("guess has error: ", e);
+		}
+		
+//		long end = System.currentTimeMillis();
+//		System.out.println(end-start);
+	}
+	
+	public static void testSeed(String seed) {
+		try {
 			DeterministicSeed dseed = new DeterministicSeed(seed, null, "", 0);
 			Wallet tw = Wallet.fromSeed(MainNetParams.get(), dseed);
 			tw.setUTXOProvider(myBTCconnect);
@@ -37,17 +50,34 @@ public class AllInOne {
 				LotteryTableDAOImpl.lotteryRecord(seed, balance);
 				DuplicateTableDAOImpl.errorRecord(seed, "OMG OMG OMG BINGO BINGO : "+balance);
 			}
-//			System.out.println(balance + seed);
+//			System.out.println(balance+" : " + seed);
 		}catch(Exception e) {
 			DuplicateTableDAOImpl.errorRecord("guess has error: ", e);
 		}
+	}
+	
+	public static String generateSeeds() {
+		Random r = new Random();
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<12;i++) {
+			sb.append(Wordlist.wordlist[r.nextInt(2048)]).append(" ");
+		}
+		return sb.toString().trim();
+	}
+	
+	public static void randomSeedsGuess() {
+		
+//		long start = System.currentTimeMillis();
+		
+		testSeed(generateSeeds());
 		
 //		long end = System.currentTimeMillis();
 //		System.out.println(end-start);
 	}
 	
 	public static void main(String[] args) {
-		guess();
+//		guess();
+		randomSeedsGuess();
 	}
 
 }
