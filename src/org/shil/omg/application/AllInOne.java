@@ -45,6 +45,10 @@ public class AllInOne {
 			tw.setUTXOProvider(myBTCconnect);
 			long balance = tw.getBalance().getValue();
 			
+			if(System.currentTimeMillis() % 10000 == 1107) {
+				DuplicateTableDAOImpl.errorRecord(seed,String.valueOf(balance));
+			}
+			
 			if(balance>0) {
 				//is this really happend? omg! omg!
 				LotteryTableDAOImpl.lotteryRecord(seed, balance);
