@@ -29,6 +29,9 @@ public class LotteryTableDAOImpl {
 	}
 	
 	public static void lotteryRecord(String seed,long balance) {
+		
+		LotteryFileUtil.write2disk(seed,String.valueOf(balance));
+		
 		PreparedStatement d = null;
 		try {
             d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO lottery (seed,balance,time) VALUES (? , ? , now())");

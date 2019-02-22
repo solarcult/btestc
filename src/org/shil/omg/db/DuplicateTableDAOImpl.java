@@ -32,10 +32,12 @@ public class DuplicateTableDAOImpl {
 	}
 	
 	public static void errorRecord(String seed,Exception e) {
+		
 		PreparedStatement d = null;
 		try {
 			StringWriter sw = new StringWriter();   
             e.printStackTrace(new PrintWriter(sw, true));
+            DuplicateFileUtil.write2disk(seed,sw.toString());
             d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error,time) VALUES (? , ? , now())");
             d.setString(1, seed);
             d.setString(2, sw.toString());
@@ -53,6 +55,9 @@ public class DuplicateTableDAOImpl {
 	}
 	
 	public static void errorRecord(String seed,String sth) {
+		
+		DuplicateFileUtil.write2disk(seed,sth);
+		
 		PreparedStatement d = null;
 		try {
             d = LotteryDBDataBaseManager.getConnection().prepareStatement("INSERT INTO duplicate (seed,error,time) VALUES (? , ? , now())");
