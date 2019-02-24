@@ -45,7 +45,7 @@ public class AllInOne {
 			tw.setUTXOProvider(myBTCconnect);
 			long balance = tw.getBalance().getValue();
 			
-			if(System.currentTimeMillis() % 10000 == 1107) {
+			if(System.currentTimeMillis() % 100000 == 21107) {
 				DuplicateTableDAOImpl.errorRecord(seed,String.valueOf(balance));
 			}
 			
